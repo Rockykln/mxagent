@@ -1,0 +1,28 @@
+# User service. Install to ~/.config/systemd/user/mxagent.service, see deploy/README.md.
+# Config: $XDG_CONFIG_HOME/mxagent/bridge.env (+ machines), state: $XDG_STATE_HOME/mxagent/,
+# socket: $XDG_RUNTIME_DIR/mxagent.sock (the daemon defaults).
+[Unit]
+Description=mxagent: control AI agents from a Matrix space
+# network-online.target is not visible to the user manager. If the network is not up yet,
+# the daemon exits and Restart=on-failure retries every RestartSec.
+
+[Service]
+Type=simple
+WorkingDirectory=%h/.local/share/mxagent
+ExecStart=/usr/bin/env node src/daemon/index.ts
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=20
+Environment=NODE_ENV=production
+UMask=0077
+
+NoNewPrivileges=yes
+PrivateTmp=yes
+LockPersonality=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+SystemCallArchitectures=native
+
+[Install]
+WantedBy=default.target

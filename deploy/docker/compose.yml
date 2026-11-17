@@ -1,0 +1,45 @@
+# Run from this directory: docker compose up -d
+# bridge.env holds the settings described in docs/guide/configuration.md.
+services:
+  bridge:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile
+    image: mxagent:latest
+    restart: unless-stopped
+    init: true
+    env_file:
+      - ./bridge.env
+    environment:
+      # Listen on all interfaces inside the container; the host publishes the port on loopback only.
+      MXA_WS_LISTEN: "0.0.0.0:8640"
+    ports:
+      - "127.0.0.1:8640:8640"
+    volumes:
+      - state:/var/lib/mxagent
+      # Config dir for the machines file (mxagentctl add-machine). The image creates it owned by
+      # uid 1000 with mode 0700, so a new named volume inherits that and is writable.
+      - config:/home/node/.config/mxagent
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /run/mxagent:uid=1000,gid=1000,mode=0750
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 20s
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:8640/health').then(r => process.exit(r.ok ? 0 : 1), () => process.exit(1))"
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+
+volumes:
+  state:
+  config:

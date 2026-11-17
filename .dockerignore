@@ -1,0 +1,17 @@
+# Only package.json, package-lock.json, LICENSE, LICENSING.md, src/ and cli/ are copied into the image.
+.git
+.github
+node_modules
+state
+dist
+*.log
+.env
+*.env
+deploy
+docs
+examples
+test
+clients
+adapters
+**/__pycache__
+**/*.pyc

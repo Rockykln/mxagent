@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+# Actions are pinned to full commit SHAs (version in the comment); update them together with the comment.
+jobs:
+  node:
+    name: node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 22.18.0 is the documented minimum (package.json engines), the others are current releases.
+        node: ["22.18.0", "22", "24"]
+    env:
+      # Fail instead of skipping when the Python e2e tests cannot run (see test/e2e.test.ts).
+      MXA_REQUIRE_PY_E2E: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      # The e2e tests run the Python SDK against the daemon (local socket and encrypted WebSocket).
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+      - run: python -m pip install cryptography websockets
+      - run: node --version
+      # Runs the postinstall of the native crypto library (downloads its prebuilt binary).
+      - run: npm ci
+      - run: npx tsc --noEmit -p .
+      # Node 22 treats a bare directory argument as a module path, so pass a glob.
+      - run: node --test "test/**/*.test.{ts,mjs,js}"
+      - name: Syntax-check the examples
+        run: |
+          for f in examples/js/*.mjs; do node --check "$f"; done
+          sh -n examples/healthcheck.sh   # dash on Ubuntu
+
+  python:
+    name: python ${{ matrix.python }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 3.10 is the documented minimum (pyproject.toml), 3.13 is current.
+        python: ["3.10", "3.13"]
+    defaults:
+      run:
+        working-directory: clients/python
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install --upgrade pip cryptography websockets
+      - run: python -m unittest discover -s tests -v
+      - name: Syntax-check the examples
+        working-directory: examples/python
+        run: python -m py_compile *.py
