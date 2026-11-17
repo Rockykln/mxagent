@@ -9,6 +9,14 @@ For protocol details, migration notes and implementation changes see the
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-11-17
+
+### Security
+
+- Update the WebSocket library `ws` to 8.21.0. Older versions could be crashed by a peer sending many
+  tiny message fragments, which affected the remote agent port.
+- Pin patched versions of `form-data`, `qs` and `tough-cookie`, which the Matrix SDK pulls in.
+
 ## [1.0.0] - 2026-11-17
 
 First public release.
@@ -45,5 +53,6 @@ First public release.
 - Licensing: daemon and CLI under AGPL-3.0-or-later; client libraries, MCP adapter, examples and protocol
   specification under Apache-2.0 (see LICENSING.md).
 
-[Unreleased]: https://github.com/Rockykln/mxagent/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/Rockykln/mxagent/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/Rockykln/mxagent/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/Rockykln/mxagent/releases/tag/v1.0.0
