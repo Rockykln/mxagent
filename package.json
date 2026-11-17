@@ -1,0 +1,32 @@
+{
+  "name": "mxagent-daemon",
+  "version": "1.0.0",
+  "description": "Control AI agents from an end-to-end encrypted Matrix space",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "start": "node src/daemon/index.ts",
+    "test": "node --test \"test/**/*.test.{ts,mjs,js}\"",
+    "check": "tsc --noEmit -p .",
+    "ctl": "node cli/mxagentctl.ts",
+    "mcp": "node adapters/mcp/server.mjs"
+  },
+  "dependencies": {
+    "@matrix-org/matrix-sdk-crypto-nodejs": "^0.4.0",
+    "matrix-bot-sdk": "^0.8.0",
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "@types/ws": "^8.18.2",
+    "typescript": "^5.8.3"
+  },
+  "allowScripts": {
+    "@matrix-org/matrix-sdk-crypto-nodejs@0.4.0": true
+  },
+  "private": true,
+  "author": "rockykln"
+}

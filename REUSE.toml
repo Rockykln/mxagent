@@ -1,0 +1,25 @@
+# License information for files that cannot carry an SPDX header (https://reuse.software).
+# Files with their own SPDX header keep it (precedence "closest"). When several annotations match
+# a file, the last one wins, so the catch-all comes first.
+version = 1
+
+# Daemon, CLI, tests, deployment, docs and repository metadata.
+[[annotations]]
+path = "**"
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 rockykln"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+# Client libraries, MCP adapter, examples and the protocol specification.
+[[annotations]]
+path = [
+    "clients/**",
+    "adapters/**",
+    "examples/**",
+    "docs/reference/protocol.md",
+    "docs/reference/protocol-test-vectors.md",
+    "docs/reference/LICENSE-Apache-2.0",
+]
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 rockykln"
+SPDX-License-Identifier = "Apache-2.0"

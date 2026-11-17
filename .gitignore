@@ -1,0 +1,9 @@
+node_modules/
+*.log
+.env
+state/
+__pycache__/
+*.pyc
+dist/
+build/
+*.egg-info/
