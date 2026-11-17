@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mxagent"
+version = "1.0.0"
+license = "Apache-2.0"
+authors = [{ name = "rockykln" }]
+license-files = ["LICENSE", "NOTICE"]
+description = "Python SDK for mxagent: talk to your AI agents through an end-to-end encrypted Matrix room"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["cryptography>=41"]
+keywords = ["matrix", "agents", "asyncio", "end-to-end encryption"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Framework :: AsyncIO",
+    "Operating System :: POSIX",
+    "Topic :: Communications :: Chat",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/Rockykln/mxagent"
+Source = "https://github.com/Rockykln/mxagent"
+Issues = "https://github.com/Rockykln/mxagent/issues"
+Documentation = "https://github.com/Rockykln/mxagent/blob/main/docs/reference/protocol.md"
+
+[project.optional-dependencies]
+remote = ["websockets>=12"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+mxagent = ["py.typed"]
