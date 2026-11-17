@@ -10,6 +10,24 @@ Entries that require agents or SDKs to be updated are marked **[agents]**.
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-11-17
+
+Daemon only; clients, MCP adapter and protocol are unchanged (still 1.0.0).
+
+### Security
+
+- `ws` 8.18.3 → 8.21.0 (GHSA for memory exhaustion from tiny fragments and data chunks, and an
+  uninitialized memory disclosure). The remote agent WebSocket server was exposed to the first one
+  before authentication.
+- `package.json` `overrides` for transitive dependencies of `matrix-bot-sdk` 0.8.0 (via `request`):
+  `form-data` ^2.5.6 (predictable multipart boundary, CRLF injection in field names), `qs` ^6.16.0
+  (DoS via array limits and `isBuffer`), `tough-cookie` ^4.1.3 (prototype pollution). Checked against
+  `request` with query strings, cookie jars, multipart and JSON bodies.
+- Not changed: `request` 2.88.2 itself has no fixed release (SSRF via cross-protocol redirects); it is
+  only used for requests to the configured homeserver. `uuid` 3.4.0 stays because `request` imports
+  `uuid/v4`, which newer versions removed; the advisory concerns v3/v5/v6 with a caller buffer, which
+  `request` does not use. Both remain until the Matrix SDK drops `request`.
+
 ## [1.0.0] - 2026-11-17
 
 First public release.
@@ -209,5 +227,6 @@ First public release.
   unencrypted metadata; remote agent links are encrypted end to end with the machine secret, so
   TLS-terminating proxies or tunnels only see ciphertext; the recovery key is not stored.
 
-[Unreleased]: https://github.com/Rockykln/mxagent/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/Rockykln/mxagent/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/Rockykln/mxagent/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/Rockykln/mxagent/releases/tag/v1.0.0
