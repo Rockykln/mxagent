@@ -1,0 +1,51 @@
+{
+  "name": "mxagent",
+  "version": "1.0.0",
+  "description": "Zero-dependency client for the mxagent agent protocol",
+  "type": "module",
+  "main": "./index.mjs",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.mjs"
+    },
+    "./secure": {
+      "types": "./secure.d.ts",
+      "default": "./secure.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.mjs",
+    "index.d.ts",
+    "index.d.mts",
+    "lines.mjs",
+    "secure.mjs",
+    "secure.d.ts",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "matrix",
+    "agent",
+    "bridge",
+    "e2ee"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rockykln/mxagent.git",
+    "directory": "clients/js"
+  },
+  "homepage": "https://github.com/Rockykln/mxagent/tree/main/clients/js#readme",
+  "bugs": {
+    "url": "https://github.com/Rockykln/mxagent/issues"
+  },
+  "license": "Apache-2.0",
+  "author": "rockykln"
+}
