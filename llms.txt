@@ -1,0 +1,38 @@
+# mxagent
+
+> Control AI agents from an end-to-end encrypted Matrix space. A Node.js daemon logs in as one bot account, gives every agent its own room and accepts messages only from the configured owner's cross-signed sessions. Agents connect over a Unix socket or an encrypted, mutually authenticated WebSocket using a newline-delimited JSON protocol, with SDKs for JavaScript and Python and an MCP adapter.
+
+The daemon runs TypeScript directly on Node.js >= 22.18 (no build step) and works with any Matrix homeserver that supports end-to-end encryption, cross-signing and spaces. `docs/reference/protocol.md` is the authoritative wire contract.
+
+Run from a checkout: daemon `npm start`, admin CLI `node cli/mxagentctl.ts <command>` (or `npm run ctl -- <command>`), MCP adapter `node adapters/mcp/server.mjs --name <agent>`. No binaries are installed. Python package and import name: `mxagent`; JavaScript package: `mxagent` (`clients/js`); the repository root is the private package `mxagent-daemon`.
+
+## Docs
+
+- [Docs index](docs/README.md): which document to read for which goal
+- [Getting started](docs/guide/getting-started.md): install, configure, log in, anchor and verify the bot (cross-sign with the daemon stopped), connect local and remote agents
+- [Configuration](docs/guide/configuration.md): config file, all MXA_* settings, agent settings, state directory
+- [Commands and rooms](docs/guide/commands.md): control-room commands, reply routing, approvals, delivery reactions, updates, polls
+- [Security](docs/guide/security.md): who can see and send what, secrets to protect, threat model, residual risks
+- [FAQ](docs/guide/faq.md): homeserver support, design choices, offline agents
+
+## Reference
+
+- [Agent protocol](docs/reference/protocol.md): transports, WebSocket handshake, message types, delivery semantics
+- [Protocol test vectors](docs/reference/protocol-test-vectors.md): fixed handshake inputs and outputs for new SDKs
+- [Architecture](docs/reference/architecture.md): components and module responsibilities with file paths
+- [Daemon internals](docs/reference/internals.md): exported API and behaviour of the modules in src/daemon/
+- [Technical changelog](docs/reference/changelog-technical.md): changes marked by protocol and agent impact
+
+## SDKs and adapters
+
+- [JavaScript SDK](clients/js/README.md): zero-dependency client, Node >= 22
+- [Python SDK](clients/python/README.md): asyncio client, Python >= 3.10
+- [MCP adapter](adapters/mcp/README.md): exposes the protocol as MCP tools plus an inbox
+- [Examples](examples/README.md): echo, approval gate, CLI bridge, poll agent
+
+## Optional
+
+- [Coding agent instructions](AGENTS.md): repo map, test commands, coding rules, protocol change checklist
+- [Deployment](deploy/README.md): systemd units, Docker, reverse proxy notes
+- [Contributing](CONTRIBUTING.md): setup and guidelines
+- [Security policy](SECURITY.md): how to report vulnerabilities
